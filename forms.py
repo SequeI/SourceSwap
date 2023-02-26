@@ -11,3 +11,8 @@ class RegistrationForm(FlaskForm):
         EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', [Length(min=4, max=25)])
+    password = PasswordField('Password', [DataRequired()])
+

@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, request, url_for, f
 from database import get_db, close_db
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import RegistrationForm
+from forms import RegistrationForm, LoginForm
 from functools import wraps
 
 
@@ -38,3 +38,16 @@ def register():
             flash(f'Welcome {form.name.data}! Thank you for registering.', "success")
             return redirect(url_for('login'))
     return render_template('register.html', form=form, title="Registration Page")
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username=form.username.data
+        password=form.password.data
+        db = get_db()
+        clashingUser = db.execute("""SELECT * FROM users WHERE username = ?;""", (username,)).fetchone()
+        if clashingUser is not None:
+            form.username.errors.append("Username not found")
+        elif not check_password_hash(clashingUser["password"], password):
+            form.password.errors.append("Wrong password")
