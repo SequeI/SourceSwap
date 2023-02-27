@@ -15,19 +15,21 @@ Session(app)
 
 @app.route("/")
 def home():
-    return render_template("admin/index.html", title="Admin Page")
+    return render_template("index.html", title="Home Page")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        name=form.name.data
-        username=form.username.data
-        email=form.email.data
-        password=form.password.data
+        name = form.name.data
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
         db = get_db()
-        clashingUser = db.execute("""SELECT * FROM users WHERE username = ?;""", (username,)).fetchone()
-        clashingEmail = db.execute("""SELECT * FROM users WHERE email = ?;""", (email,)).fetchone()
+        clashingUser = db.execute("""SELECT * FROM users
+                                     WHERE username = ?;""", (username,)).fetchone()
+        clashingEmail = db.execute("""SELECT * FROM users 
+                                     WHERE email = ?;""", (email,)).fetchone()
         if clashingUser is not None:
             form.username.errors.append("Username already taken, please try again.")
         elif clashingEmail is not None:
@@ -43,11 +45,17 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        username=form.username.data
-        password=form.password.data
         db = get_db()
-        clashingUser = db.execute("""SELECT * FROM users WHERE username = ?;""", (username,)).fetchone()
-        if clashingUser is not None:
-            form.username.errors.append("Username not found")
-        elif not check_password_hash(clashingUser["password"], password):
-            form.password.errors.append("Wrong password")
+        User = db.execute("""SELECT * FROM users WHERE email = ?;""", (form.email.data,)).fetchone()
+        if User is None:
+            flash("Email not found, please try again", "danger")
+        elif not check_password_hash(User["password"], form.password.data):
+            flash("Wrong password, please try again", "danger")
+        elif check_password_hash(User["password"], form.password.data) and User["email"] == form.email.data:
+            session.clear()
+            session["email"] = form.email.data
+            flash(f"Welcome {form.email.data} You are logged in :)", "success")
+            return redirect(request.args.get("next") or url_for("admin"))
+        
+    return render_template("login.html", form=form, title="Login Page")
+
