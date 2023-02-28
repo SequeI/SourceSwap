@@ -1,20 +1,21 @@
 {% extends "layout.html" %}
 
 {% block main_content %}
+<div class="container col-lg-5">
+    <div class="text-center h1">Login</div>
+    {% include 'flash_message.html' %}
+    <div class="container">
+        {% from "macros.html" import render_field with context %}
+        <form method="post" action="" novalidate>
+            <div>
+                {{ form.hidden_tag() }}
+                {{ render_field(form.email) }}
+                {{ render_field(form.password) }}
+                {{ form.submit(class_=" btn btn-primary") }}
+            </div>
 
-<div class="text-center h1">Login</div>
-<div class="container">
-    <form method="post" action="" novalidate>
-        <div>
-            {{ form.hidden_tag() }}
-            {{ form.email.label }}
-            {{ form.email() }}
-            {{ form.password.label }}
-            {{ form.password() }}
-        </div>
-
-        {{ form.submit() }}
-    </form>
+        </form>
+    </div>
 </div>
 
 {% endblock main_content %}
