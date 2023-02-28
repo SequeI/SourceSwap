@@ -1,26 +1,22 @@
 {% extends "layout.html" %}
 
 {% block main_content %}
-
+<div class="container col-lg-5">
 <div class="text-center h1">Register</div>
-<div class="container">
+    {% from "macros.html" import render_field with context %}
 
     <form method="post" action="" novalidate>
-        <div>
             {{ form.hidden_tag() }}
-            {{ form.name.label }}
-            {{ form.name() }}
-            {{ form.username.label }}
-            {{ form.username() }}
-            {{ form.email.label }}
-            {{ form.email() }}
-            {{ form.password.label }}
-            {{ form.password() }}
-            {{ form.confirm.label }}
-            {{ form.confirm() }}
+        <div >
+            {{ render_field(form.name) }}
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm) }}
+            {{ form.submit(class_=" btn btn-primary") }}
         </div>
 
-        {{ form.submit() }}
     </form>
 </div>
 
