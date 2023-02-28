@@ -48,14 +48,14 @@ def login():
         db = get_db()
         User = db.execute("""SELECT * FROM users WHERE email = ?;""", (form.email.data,)).fetchone()
         if User is None:
-            flash("Email not found, please try again", "danger")
+            form.email.errors.append("Email not found, please try again.")
         elif not check_password_hash(User["password"], form.password.data):
-            flash("Wrong password, please try again", "danger")
+            form.password.errors("Wrong password, please try again")
         elif check_password_hash(User["password"], form.password.data) and User["email"] == form.email.data:
             session.clear()
             session["email"] = form.email.data
             flash(f"Welcome {form.email.data} You are logged in :)", "success")
-            return redirect(request.args.get("next") or url_for("admin"))
+            return redirect(request.args.get("next") or url_for("register"))
         
     return render_template("login.html", form=form, title="Login Page")
 
