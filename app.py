@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, request, url_for, f
 from database import get_db, close_db
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, AddGameForm
 from functools import wraps
 import os
 
@@ -60,3 +60,9 @@ def login():
         
     return render_template("login.html", form=form, title="Login Page")
 
+
+@app.route('/addgame', methods=['GET','POST'])
+def addGame():
+    form = AddGameForm()
+    #if form.validate_on_submit():
+    return render_template("admin/addgame.html", title="Add Game Page")
