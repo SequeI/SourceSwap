@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+<div class="container col-lg-5 ">
+<div class="text-center h1">Add Game</div>
+    {% from "macros.html" import render_field with context %}
+
+    <form method="post" action=""  novalidate enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+        <div >
+            {{ render_field(form.gameName) }}
+            {{ render_field(form.gamePrice) }}
+            {{ render_field(form.gameDiscount) }}
+            {{ render_field(form.codeStock) }}
+            {{ render_field(form.gameDesc) }}
+            {{ render_field(form.gameImage) }}
+            {{ form.submit(class_=" btn btn-primary") }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock main_content %}

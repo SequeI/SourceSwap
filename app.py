@@ -65,4 +65,4 @@ def login():
 def addGame():
     form = AddGameForm()
     #if form.validate_on_submit():
-    return render_template("admin/addgame.html", title="Add Game Page")
+    return render_template("addgame.html", title="Add Game Page", form=form)

@@ -19,11 +19,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Submit")
 
 class AddGameForm(FlaskForm):
-    gameName = StringField("name", [DataRequired()])
+    gameName = StringField("Game Name", [DataRequired()])
     gamePrice = IntegerField("Price", [DataRequired()])
     gameDiscount = IntegerField("Discount", default = 0)
     codeStock = IntegerField("Stock", [DataRequired()])
-    gameDesc = TextAreaField("Game Description", [DataRequired])
-    gameImage = FileField("Game Picture",[DataRequired] )
+    gameDesc = TextAreaField("Game Description", [DataRequired()])
+    gameImage = FileField("Game Picture",[DataRequired()] )
+    submit = SubmitField("Submit")
 
 
