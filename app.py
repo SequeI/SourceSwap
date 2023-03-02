@@ -13,10 +13,12 @@ app.config["SECRET_KEY"] = os.urandom(12)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+uploadFolder = "static/uploads/"
+app.config["UPLOAD_FOLDER"] = uploadFolder
 
 @app.route("/")
 def home():
-    return render_template("index.html", title="Home Page")
+    return render_template("base.html", title="Home Page")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -64,5 +66,23 @@ def login():
 @app.route('/addgame', methods=['GET','POST'])
 def addGame():
     form = AddGameForm()
-    #if form.validate_on_submit():
+    if form.validate_on_submit():
+        db = get_db()
+        gameName = form.gameName.data
+        gamePrice = form.gamePrice.data
+        gameDiscount = form.gameDiscount.data
+        codeStock = form.codeStock.data
+        gameDesc = form.gameDesc.data
+        uniqueFileName = str(os.urandom(4)) + "_" + form.gameImage.name
+        imageFile = request.files[form.gameImage.name]
+        clashingGameName = db.execute("""SELECT * FROM games
+                                     WHERE name = ?;""", (gameName,)).fetchone()
+        if clashingGameName is not None:
+            form.gameName.errors.append("Game name already taken, please update.")
+        else:
+            imageFile.save(os.path.join(app.config["UPLOAD_FOLDER"], uniqueFileName))
+            session.setdefault('files_to_delete', []).append(uniqueFileName)
+            db.execute("""INSERT INTO games (name, price, discount, stock, descr, image) VALUES (?, ?, ?, ?, ?, ?);""",(gameName, gamePrice, gameDiscount, codeStock, gameDesc, uniqueFileName))
+            db.commit()
+            flash("Database has been successfully updated.", "success")
     return render_template("addgame.html", title="Add Game Page", form=form)

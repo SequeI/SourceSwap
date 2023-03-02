@@ -19,3 +19,4 @@ stock TEXT NOT NULL,
 descr TEXT NOT NULL,
 image TEXT NOT NULL
 );
+
