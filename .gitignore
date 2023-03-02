@@ -26,4 +26,3 @@ instance/
 .webassets-cache
 /*_session/
 UPLOAD_FOLDER
-static/uploads

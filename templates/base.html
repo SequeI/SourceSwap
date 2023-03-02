@@ -1,18 +1,9 @@
-<!doctype html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
-    <link href="{{ url_for("static", filename = "css/bootstrap.min.css")}}" rel="stylesheet">
-</head>
-
-<body>
 {% block main_content %}
+{% for game in games %}
+
+<img src="{{url_for('static', filename='uploads/' + game["image"] )}}" class="" alt="{{game.name}}" height="450" width="250">
+
+{% endfor %}
 {% endblock main_content %}
-
-    <script src="{{ url_for("static", filename = "js/bootstrap.bundle.min.js")}}"></script>
-</body>
-
-</html>

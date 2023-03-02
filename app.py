@@ -36,7 +36,9 @@ def delete_files():
 
 @app.route("/")
 def home():
-    return render_template("base.html", title="Home Page")
+    db = get_db()
+    games = db.execute("""SELECT * FROM games;""").fetchall()
+    return render_template("base.html", title="Home Page",games=games)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
