@@ -24,9 +24,13 @@ def delete_files():
         files_to_delete = sorted(files_to_delete, key=lambda f: os.path.getctime(os.path.join(uploadFolder, f)))
         files_to_delete = files_to_delete[:num_files_to_delete]
         for file in files_to_delete:
+            db = get_db()
+            db.execute("""DELETE * FROM games WHERE image = ?;""", (file,))
+            db.commit()
             file_path = os.path.join(uploadFolder, file)
             if os.path.exists(file_path):
                 os.remove(file_path)
+
         session['files_to_delete'] = list(set(files_to_delete) - set(files_to_delete))
 
 
@@ -69,7 +73,7 @@ def login():
         elif not check_password_hash(User["password"], form.password.data):
             form.password.errors("Wrong password, please try again")
         elif check_password_hash(User["password"], form.password.data) and User["email"] == form.email.data:
-            session.clear()
+            del session["email"]
             session["email"] = form.email.data
             flash(f"Welcome {form.email.data} You are logged in :)", "success")
             return redirect(request.args.get("next") or url_for("register"))
