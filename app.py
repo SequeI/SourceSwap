@@ -16,6 +16,20 @@ Session(app)
 uploadFolder = "static/uploads/"
 app.config["UPLOAD_FOLDER"] = uploadFolder
 
+@app.before_request
+def delete_files():
+    files_to_delete = session.get('files_to_delete', [])
+    if len(files_to_delete) > 20:
+        num_files_to_delete = len(files_to_delete) - 20
+        files_to_delete = sorted(files_to_delete, key=lambda f: os.path.getctime(os.path.join(uploadFolder, f)))
+        files_to_delete = files_to_delete[:num_files_to_delete]
+        for file in files_to_delete:
+            file_path = os.path.join(uploadFolder, file)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        session['files_to_delete'] = list(set(files_to_delete) - set(files_to_delete))
+
+
 @app.route("/")
 def home():
     return render_template("base.html", title="Home Page")
