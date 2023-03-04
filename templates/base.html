@@ -2,8 +2,11 @@
 
 {% block main_content %}
 {% for game in games %}
-
-<img src="{{url_for('static', filename='uploads/' + game["image"] )}}" class="" alt="{{game.name}}" height="450" width="250">
-
+<div>
+    <img src="{{url_for('static', filename='uploads/' + game["image"] )}}" 
+        alt="{{game.name}}" height="450"
+        width="250">
+        <p>Price: ${{ game["price"] }}</p>
+</div>
 {% endfor %}
 {% endblock main_content %}
