@@ -106,3 +106,11 @@ def addGame():
             db.commit()
             flash("Database has been successfully updated.", "success")
     return render_template("addgame.html", title="Add Game Page", form=form)
+
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+    db = get_db()
+    user = db.execute("""SELECT * FROM users WHERE email = ?;""", (session["email"],)).fetchone()
+        
+    return render_template("profile.html", title="Login Page", user=user )
