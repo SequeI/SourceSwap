@@ -2,7 +2,7 @@
 
 {% block main_content %}
 <div class="container ">
-  <table class="table table-sm table-condensed table-striped">
+  <table class="table table-sm table-condensed table-striped table-hover">
     <thead>
         <th>Game ID</th>
         <th>Name</th>
@@ -24,8 +24,8 @@
         <td>{{ game.stock }}</td>
         <td>{{ game.descr }}</td>
         <td><img src="{{url_for('static', filename='uploads/' + game.image )}}" alt="game.name" width="100"></td>
-        <td>Edit</td>
-        <td>Delete</td>
+        <td><a href="" class="btn btn-sm btn-outline-info">Edit</a></td>
+        <td><a href="" class="btn btn-sm btn-outline-danger">Delete</a></td>
     </tr>
     {% endfor %}
     </tbody>
