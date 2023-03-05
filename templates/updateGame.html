@@ -1,15 +1,35 @@
 {% extends "layout.html" %}
 
 {% block main_content %}
-<div class="row">
-    <div class="col-md-6">
-        <h2>Update Name</h2>
-        <form action="" method="POST">
-            <input type="text" name="game" class="form-control" value="{{ game.name }}">
-            <input type="submit" value="Update Game" class="btn btn-info mt-2">
-        </form>
-    </div>
+<div class="container">
+    <h2>UPDATE GAME</h2>
+    {% from "macros.html" import render_field with context %}
+    <form method="post" action="" novalidate>
+        <div>
+            {{ form1.hidden_tag() }}
+            {{ render_field(form1.gameName) }}
+            {{ form1.submit(class_=" btn btn-primary") }}
+        </div>
 
-</div>
+    </form>
+    <form method="post" action="" novalidate>
+        <div>
+            {{ form2.hidden_tag() }}
+            {{ render_field(form2.gameStock) }}
+            {{ form2.submit(class_=" btn btn-primary") }}
+        </div>
+
+    </form>
+    <form method="post" action="" novalidate>
+        <div>
+            {{ form3.hidden_tag() }}
+            {{ render_field(form3.gameDesc) }}
+            {{ form3.submit(class_=" btn btn-primary") }}
+        </div>
+
+    </form>
+    <div>
 
 {% endblock main_content %}
+
+

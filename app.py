@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, request, url_for, f
 from database import get_db, close_db
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import RegistrationForm, LoginForm, AddGameForm
+from forms import RegistrationForm, LoginForm, AddGameForm, UpdateGameName, UpdateGameStock, UpdateGameDescr
 from functools import wraps
 import os
 
@@ -124,7 +124,10 @@ def admin():
 
 @app.route('/updategame/<int:game_id>', methods=['GET','POST'])
 def updategame(game_id):
+    form1 = UpdateGameName()
+    form2 = UpdateGameStock()
+    form3 = UpdateGameDescr()
     db = get_db()
     game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
         
-    return render_template("updateGame.html", title="Update Game Page", game=game  )
+    return render_template("updateGame.html", title="Update Game Page", game=game,form1=form1,form2=form2,form3=form3  )
