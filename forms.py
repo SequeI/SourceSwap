@@ -27,17 +27,5 @@ class AddGameForm(FlaskForm):
     gameImage = FileField("Game Picture",[DataRequired()] )
     submit = SubmitField("Submit")
 
-class UpdateGameName(FlaskForm):
-    gameName = StringField("Game Name")
-    submit = SubmitField("Submit")
-
-class UpdateGameStock(FlaskForm):
-    gameStock = IntegerField("Game Stock")
-    submit = SubmitField("Submit")
-
-class UpdateGameDescr(FlaskForm):
-    gameDesc = TextAreaField("Game Description")
-    submit = SubmitField("Submit")
-
 
 

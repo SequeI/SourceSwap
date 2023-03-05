@@ -2,34 +2,31 @@
 
 {% block main_content %}
 <div class="container">
-    <h2>UPDATE GAME</h2>
-    {% from "macros.html" import render_field with context %}
+    <div class="text-center h1">Update Game</div>
     <form method="post" action="" novalidate>
-        <div>
-            {{ form1.hidden_tag() }}
-            {{ render_field(form1.gameName) }}
-            {{ form1.submit(class_=" btn btn-primary") }}
+        <div class="form-group">
+            <label for="gameName" class="form-label">Game Name</label>
+            <input type="text" class="form-control" value="{{ game.name }}" name="gameName">
         </div>
-
-    </form>
-    <form method="post" action="" novalidate>
-        <div>
-            {{ form2.hidden_tag() }}
-            {{ render_field(form2.gameStock) }}
-            {{ form2.submit(class_=" btn btn-primary") }}
+        <div class="form-group">
+            <label for="gamePrice" class="form-label">Game Price</label>
+            <input type="text" class="form-control" value="{{ game.price }}" name="gamePrice">
         </div>
-
-    </form>
-    <form method="post" action="" novalidate>
-        <div>
-            {{ form3.hidden_tag() }}
-            {{ render_field(form3.gameDesc) }}
-            {{ form3.submit(class_=" btn btn-primary") }}
+        <div class="form-group">
+            <label for="gameDiscount" class="form-label">Game Discount</label>
+            <input type="text" class="form-control" value="{{ game.discount }}" name="gameDiscount">
         </div>
-
+        <div class="form-group">
+            <label for="gameStock" class="form-label">Game Stock</label>
+            <input type="text" class="form-control" value="{{ game.stock }}" name="gameStock">
+        </div>
+        <div class="form-group">
+            <label for="gameDesc" class="form-label">Game Description</label>
+            <textarea type="text" class="form-control" name="gameDesc" rows="7">{{ game.descr }}</textarea>
+        </div>
+        <input type="submit" name="" value="Update Game" class="btn btn-info mt-2">
     </form>
+
     <div>
 
-{% endblock main_content %}
-
-
+        {% endblock main_content %}
