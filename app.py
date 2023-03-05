@@ -121,3 +121,10 @@ def admin():
     games = db.execute("""SELECT * FROM games;""").fetchall()
         
     return render_template("adminDashboard.html", title="Admin Page", games=games  )
+
+@app.route('/updategame/<int:game_id>', methods=['GET','POST'])
+def updategame(game_id):
+    db = get_db()
+    game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
+        
+    return render_template("updateGame.html", title="Update Game Page", game=game  )

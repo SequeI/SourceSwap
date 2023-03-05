@@ -24,7 +24,7 @@
         <td>{{ game.stock }}</td>
         <td>{{ game.descr }}</td>
         <td><img src="{{url_for('static', filename='uploads/' + game.image )}}" alt="game.name" width="100"></td>
-        <td><a href="" class="btn btn-sm btn-outline-info">Edit</a></td>
+        <td><a href="{{ url_for("updategame", game_id=game["game_id"]) }}" class="btn btn-sm btn-outline-info">Edit</a></td>
         <td><a href="" class="btn btn-sm btn-outline-danger">Delete</a></td>
     </tr>
     {% endfor %}
