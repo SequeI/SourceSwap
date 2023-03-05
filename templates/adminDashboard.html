@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+<div class="container ">
+  <table class="table table-sm table-condensed table-striped">
+    <thead>
+        <th>Game ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>Stock</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </thead>
+    <tbody>
+        {% for game in games %}
+        <tr>
+        <td>{{ game.game_id }}</td>
+        <td>{{ game.name }}</td>
+        <td>{{ game.price }}</td>
+        <td>{{ game.discount }}</td>
+        <td>{{ game.stock }}</td>
+        <td>{{ game.descr }}</td>
+        <td><img src="{{url_for('static', filename='uploads/' + game.image )}}" alt="game.name" width="100"></td>
+        <td>Edit</td>
+        <td>Delete</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock main_content %}

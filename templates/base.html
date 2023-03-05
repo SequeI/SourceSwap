@@ -3,7 +3,7 @@
 {% block main_content %}
 {% for game in games %}
 <div>
-    <img src="{{url_for('static', filename='uploads/' + game["image"] )}}" 
+    <img src="{{url_for('static', filename='uploads/' + game.image )}}" 
         alt="{{game.name}}" height="450"
         width="250">
         <p>Price: ${{ game["price"] }}</p>

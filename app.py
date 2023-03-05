@@ -114,3 +114,10 @@ def profile():
     user = db.execute("""SELECT * FROM users WHERE email = ?;""", (session["email"],)).fetchone()
         
     return render_template("profile.html", title="Login Page", user=user )
+
+@app.route('/admin', methods=['GET','POST'])
+def admin():
+    db = get_db()
+    games = db.execute("""SELECT * FROM games;""").fetchall()
+        
+    return render_template("adminDashboard.html", title="Admin Page", games=games  )
