@@ -135,6 +135,17 @@ def updategame(game_id):
         db.execute("""UPDATE games SET name = ?, price = ?, discount = ?, stock = ?, descr = ? WHERE game_id = ?;""",
             (gameName, gamePrice, gameDiscount, gameStock, gameDesc, game_id))        
         db.commit()
-   
-        
     return render_template("updateGame.html", title="Update Game", game=game )
+
+@app.route('/deletegame/<int:game_id>', methods=['GET', 'POST'])
+def deletegame(game_id):
+    db = get_db()
+    game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
+    fileName = game["image"]
+    if request.method == "GET":
+        file_path = os.path.join(uploadFolder, fileName)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        db.execute("""DELETE FROM games WHERE game_id = ?;""", (game_id,))        
+        db.commit()
+    return redirect(url_for("admin"))
