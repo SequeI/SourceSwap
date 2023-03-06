@@ -34,7 +34,7 @@ def delete_files():
         session['files_to_delete'] = list(set(files_to_delete) - set(files_to_delete))
 
 
-@app.route("/")
+@app.route("/home")
 def home():
     db = get_db()
     games = db.execute("""SELECT * FROM games;""").fetchall()
@@ -149,3 +149,14 @@ def deletegame(game_id):
         db.execute("""DELETE FROM games WHERE game_id = ?;""", (game_id,))        
         db.commit()
     return redirect(url_for("admin"))
+
+@app.route('/addtocart/<int:game_id>', methods=['GET', 'POST'])
+def addtocart(game_id):
+    if request.method == "POST":
+        if "cart" not in session:
+            session["cart"] = []
+        if game_id not in session["cart"]:
+            cart = session["cart"]
+            cart.append(game_id)
+            session["cart"] = cart
+    return redirect(url_for("home"))
