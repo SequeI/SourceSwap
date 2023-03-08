@@ -173,3 +173,8 @@ def cart():
             names[game_id] = name
             prices[game_id] = price
         return render_template("cart.html", cart=session["cart"], names=names, prices=prices)
+
+@app.route('/deletefromcart/<int:game_id>', methods=['GET', 'POST'])
+def deletefromcart(game_id):
+        del session["cart"][game_id]
+        return redirect(url_for("cart"))
