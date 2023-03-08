@@ -112,8 +112,7 @@ def addGame():
 def profile():
     db = get_db()
     user = db.execute("""SELECT * FROM users WHERE email = ?;""", (session["email"],)).fetchone()
-        
-    return render_template("profile.html", title="Login Page", user=user )
+    return render_template("profile.html", title="Login Page", user=user)
 
 @app.route('/admin', methods=['GET','POST'])
 def admin():
@@ -152,11 +151,25 @@ def deletegame(game_id):
 
 @app.route('/addtocart/<int:game_id>', methods=['GET', 'POST'])
 def addtocart(game_id):
-    if request.method == "POST":
         if "cart" not in session:
-            session["cart"] = []
+            session["cart"] = {}
         if game_id not in session["cart"]:
-            cart = session["cart"]
-            cart.append(game_id)
-            session["cart"] = cart
-    return redirect(url_for("home"))
+            session["cart"][game_id] = 1
+        else:
+            session["cart"][game_id] = session["cart"][game_id] + 1
+        return redirect(url_for("home"))
+
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+        if "cart" not in session:
+            session["cart"] = {}
+        names = {}
+        prices = {}
+        db = get_db()
+        for game_id in session["cart"]:
+            game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
+            name = game["name"]
+            price = game["price"]
+            names[game_id] = name
+            prices[game_id] = price
+        return render_template("cart.html", cart=session["cart"], names=names, prices=prices)

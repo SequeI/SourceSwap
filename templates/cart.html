@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+<div>
+    {% if cart %}
+    <div class="container ">
+        <table class="table table-sm table-condensed table-striped table-hover">
+            <thead>
+                <th>Name</th>
+                <th>Price</th>
+            </thead>
+            <tbody>
+                {% for game_id in cart %}
+                <tr>
+                    <td>{{ names["game_id"] }}</td>
+                    <td>{{ prices["game_id"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Your cart is empty!</p>
+    </div>
+
+    {% endif %}
+</div>
+</div>
+
+{% endblock main_content %}
