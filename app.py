@@ -59,10 +59,17 @@ def logout():
     return redirect(url_for("index"))
 
 @app.route("/")
+@app.route('/index')
+@app.route('/home')
 def index():
     db = get_db()
-    games = db.execute("""SELECT * FROM games;""").fetchall()
-    return render_template("base.html", title="Home Page",games=games)
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    offset = (page - 1) * per_page
+    games = db.execute("""SELECT * FROM games LIMIT ? OFFSET ?;""", (per_page, offset)).fetchall()
+    count = db.execute("""SELECT COUNT(*) FROM games;""").fetchone()[0]
+    total_pages = int(count / per_page) + (count % per_page > 0)
+    return render_template("base.html", title="Home Page", games=games, total_pages=total_pages, current_page=page)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
