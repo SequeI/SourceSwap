@@ -16,6 +16,19 @@ Session(app)
 uploadFolder = "static/uploads/"
 app.config["UPLOAD_FOLDER"] = uploadFolder
 
+
+@app.before_request
+def loggedInUser():
+    g.user = session.get("email", None)
+
+def login_required(view): 
+    @wraps(view) 
+    def wrapped_view(*args, **kwargs): 
+        if g.user is None: 
+            return redirect(url_for("login", next=request.ur1)) 
+        return view(*args, **kwargs) 
+    return wrapped_view
+
 @app.before_request
 def delete_files():
     files_to_delete = session.get('files_to_delete', [])
@@ -33,9 +46,13 @@ def delete_files():
 
         session['files_to_delete'] = list(set(files_to_delete) - set(files_to_delete))
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 @app.route("/home")
-def home():
+def index():
     db = get_db()
     games = db.execute("""SELECT * FROM games;""").fetchall()
     return render_template("base.html", title="Home Page",games=games)
@@ -166,13 +183,15 @@ def cart():
         names = {}
         prices = {}
         db = get_db()
+        totalPrice = 0
         for game_id in session["cart"]:
             game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
             name = game["name"]
             price = game["price"]
             names[game_id] = name
             prices[game_id] = price
-        return render_template("cart.html", cart=session["cart"], names=names, prices=prices)
+            totalPrice += int(price) * session["cart"][game_id]
+        return render_template("cart.html", cart=session["cart"], names=names, prices=prices, totalPrice=totalPrice)
 
 @app.route('/deletefromcart/<int:game_id>', methods=['GET', 'POST'])
 def deletefromcart(game_id):

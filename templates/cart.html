@@ -4,7 +4,7 @@
 <div>
     {% if cart %}
     <div class="container ">
-        <table class="table  table-condensed table-striped table-hover">
+        <table class="table  table-sm table-condensed table-striped table-hover">
             <thead>
                 <th>Name</th>
                 <th>Quantity</th>
@@ -16,9 +16,10 @@
                     <td>{{ names[game_id] }}</td>
                     <td>{{ cart[game_id] }}</td>
                     <td>${{ prices[game_id] }}</td>
-                    <td><a href="{{ url_for('deletefromcart', game_id=game_id) }}" class="btn btn-sm btn-outline-danger">Delete</a></td>
+                    <td><a href="{{ url_for('deletefromcart', game_id=game_id) }}" class="btn  btn-sm btn-outline-danger">Delete</a></td>
                 </tr>
                 {% endfor %}
+                <tr><td> Total Price = {{ totalPrice }}</td></tr>
             </tbody>
         </table>
         {% else %}
