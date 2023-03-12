@@ -187,7 +187,7 @@ def addtocart(game_id):
             session["cart"][game_id] = 1
         else:
             session["cart"][game_id] = session["cart"][game_id] + 1
-        return redirect(url_for("home"))
+        return redirect(url_for("index"))
 
 @app.route('/cart', methods=['GET', 'POST'])
 @login_required
