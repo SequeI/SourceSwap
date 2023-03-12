@@ -39,20 +39,18 @@ def admin_required(view):
 
 @app.before_request
 def delete_files():
-    files_to_delete = session.get('files_to_delete', [])
-    if len(files_to_delete) > 20:
-        num_files_to_delete = len(files_to_delete) - 20
-        files_to_delete = sorted(files_to_delete, key=lambda f: os.path.getctime(os.path.join(uploadFolder, f)))
-        files_to_delete = files_to_delete[:num_files_to_delete]
-        for file in files_to_delete:
+    gamesImages = db.execute("""SELECT image FROM games;""").fetchall()
+    if len(gamesImages) > 10:
+        num_files_to_delete = len(gamesImages) - 10
+        gamesImages = sorted(gamesImages, key=lambda f: os.path.getctime(os.path.join(uploadFolder, f)))
+        gamesImages = gamesImages[:num_files_to_delete]
+        for file in gamesImages:
             db = get_db()
             db.execute("""DELETE * FROM games WHERE image = ?;""", (file,))
             db.commit()
             file_path = os.path.join(uploadFolder, file)
             if os.path.exists(file_path):
                 os.remove(file_path)
-
-        session['files_to_delete'] = list(set(files_to_delete) - set(files_to_delete))
 
 @app.route("/logout")
 def logout():
