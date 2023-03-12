@@ -19,8 +19,8 @@
       <tr>
         <td>{{ game.game_id }}</td>
         <td>{{ game.name }}</td>
-        <td>{{ game.price }}</td>
-        <td>{{ game.discount }}</td>
+        <td>${{ game.price }}</td>
+        <td>{{ game.discount }}%</td>
         <td>{{ game.stock }}</td>
         <td>{{ game.descr }}</td>
         <td><img src="{{url_for('static', filename='uploads/' + game.image )}}" alt="game.name" width="100"></td>

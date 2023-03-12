@@ -210,5 +210,8 @@ def cart():
 
 @app.route('/deletefromcart/<int:game_id>', methods=['GET', 'POST'])
 def deletefromcart(game_id):
-        del session["cart"][game_id]
+        if session["cart"][game_id] > 1:
+            session["cart"][game_id] = session["cart"][game_id] - 1
+        else:
+            del session["cart"][game_id]
         return redirect(url_for("cart"))

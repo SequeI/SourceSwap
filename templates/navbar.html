@@ -1,33 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ps-3">
     <a class="navbar-brand" href="{{ url_for("index") }}">GameShop</a>
     <div>
-        <ul class="navbar-nav ">
-            <li class="nav-item active">
+        <ul class="navbar-nav ms-5">
+            <li class="nav-item active me-3">
                 <a class="nav-link" href="{{ url_for("index") }}">Home </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item me-3">
                 <a class="nav-link" href="{{ url_for("cart") }}">Cart</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item me-3">
                 <a class="nav-link" href="{{ url_for("profile") }}">Profile</a>
             </li>
             {% if session["email"] %}
-            <li class="nav-item">
+            <li class="nav-item me-3">
                 <a class="nav-link " href="{{ url_for("logout") }}">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item">
+            <li class="nav-item me-3">
                 <a class="nav-link " href="{{ url_for("register") }}">Register</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item me-3">
                 <a class="nav-link " href="{{ url_for("login") }}">Login</a>
             </li>
             {% endif %}
             {% if session["email"] == "admin1" %}
-            <li class="nav-item ">
+            <li class="nav-item me-3">
                 <a class="nav-link " href="{{ url_for("admin") }}">Admin</a>
             </li>
-            <li class="nav-item ">
+            <li class="nav-item me-3">
                 <a class="nav-link " href="{{ url_for("addgame") }}">Add Game</a>
             </li>
             {% endif %}
