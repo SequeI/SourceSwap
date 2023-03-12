@@ -4,12 +4,18 @@ from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegistrationForm, LoginForm, AddGameForm
 from functools import wraps
+import random
+import string
 import os
 
+def random_s():
+    digit_char = random.choices(string.ascii_uppercase, k=4) + random.choices(string.digits, k=2)
+    random.shuffle(digit_char)
+    return "Z0R" + ''.join(digit_char)
 
 app = Flask(__name__)
 app.teardown_appcontext(close_db)
-app.config["SECRET_KEY"] = os.urandom(12)
+app.config["SECRET_KEY"] = random_s()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -124,7 +130,7 @@ def addgame():
         gameDiscount = form.gameDiscount.data
         codeStock = form.codeStock.data
         gameDesc = form.gameDesc.data
-        uniqueFileName = str(os.urandom(4)) + "_" + form.gameImage.name
+        uniqueFileName = str(random_s() + "_" + form.gameImage.name)
         imageFile = request.files[form.gameImage.name]
         clashingGameName = db.execute("""SELECT * FROM games
                                      WHERE name = ?;""", (gameName,)).fetchone()
