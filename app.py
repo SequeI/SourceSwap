@@ -58,7 +58,7 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
-@app.route("/home")
+@app.route("/")
 def index():
     db = get_db()
     games = db.execute("""SELECT * FROM games;""").fetchall()
@@ -101,7 +101,6 @@ def login():
         elif check_password_hash(User["password"], form.password.data) and User["email"] == form.email.data:
             session.clear()
             session["email"] = form.email.data
-            flash(f"Welcome {form.email.data} You are logged in :)", "success")
             return redirect(request.args.get("next") or url_for("index"))
         
     return render_template("login.html", form=form, title="Login Page")
@@ -129,7 +128,6 @@ def addgame():
             session.setdefault('files_to_delete', []).append(uniqueFileName)
             db.execute("""INSERT INTO games (name, price, discount, stock, descr, image) VALUES (?, ?, ?, ?, ?, ?);""",(gameName, gamePrice, gameDiscount, codeStock, gameDesc, uniqueFileName))
             db.commit()
-            flash("Database has been successfully updated.", "success")
             return redirect(url_for("admin"))
     return render_template("addgame.html", title="Add Game Page", form=form)
 
