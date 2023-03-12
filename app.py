@@ -102,7 +102,7 @@ def login():
             session.clear()
             session["email"] = form.email.data
             flash(f"Welcome {form.email.data} You are logged in :)", "success")
-            return redirect(request.args.get("next") or url_for("register"))
+            return redirect(request.args.get("next") or url_for("index"))
         
     return render_template("login.html", form=form, title="Login Page")
 

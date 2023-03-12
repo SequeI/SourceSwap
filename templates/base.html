@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block main_content %}
-{% for game in games %}
-<div class="card" style="width: 20rem;">
-    <img src="{{url_for('static', filename='uploads/' + game.image )}}" class="card-img-top" alt="{{game.name}}">
+<div class=" d-flex justify-content-center ">
+  {% for game in games %}
+  <div class="card m-3" style="width: 20rem;">
+    <img src="{{url_for('static', filename='uploads/' + game.image )}}" class="card-img-top" alt="{{game.name}}" height="55%">
     <div class="card-body">
       <h5 class="card-title">{{game.name}}</h5>
       <p class="card-text">{{ game.descr }}</p>
-      <a href="{{ url_for('addtocart', game_id=game.game_id) }}" class="btn btn-primary">Buy Now</a>
+      <a href="{{ url_for('addtocart', game_id=game.game_id) }}" class="btn btn-primary position-absolute bottom-0 start-0 m-3">Buy Now</a>
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
+</div>
 {% endblock main_content %}
