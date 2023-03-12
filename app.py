@@ -110,7 +110,7 @@ def login():
 
 @app.route('/addgame', methods=['GET','POST'])
 @admin_required
-def addGame():
+def addgame():
     form = AddGameForm()
     if form.validate_on_submit():
         db = get_db()
@@ -131,6 +131,7 @@ def addGame():
             db.execute("""INSERT INTO games (name, price, discount, stock, descr, image) VALUES (?, ?, ?, ?, ?, ?);""",(gameName, gamePrice, gameDiscount, codeStock, gameDesc, uniqueFileName))
             db.commit()
             flash("Database has been successfully updated.", "success")
+            return redirect(url_for("admin"))
     return render_template("addgame.html", title="Add Game Page", form=form)
 
 
@@ -163,6 +164,7 @@ def updategame(game_id):
         db.execute("""UPDATE games SET name = ?, price = ?, discount = ?, stock = ?, descr = ? WHERE game_id = ?;""",
             (gameName, gamePrice, gameDiscount, gameStock, gameDesc, game_id))        
         db.commit()
+        return redirect(url_for("admin"))
     return render_template("updateGame.html", title="Update Game", game=game )
 
 @app.route('/deletegame/<int:game_id>', methods=['GET', 'POST'])
