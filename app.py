@@ -25,7 +25,15 @@ def login_required(view):
     @wraps(view) 
     def wrapped_view(*args, **kwargs): 
         if g.user is None: 
-            return redirect(url_for("login", next=request.ur1)) 
+            return redirect(url_for("login", next=request.url)) 
+        return view(*args, **kwargs) 
+    return wrapped_view
+
+def admin_required(view): 
+    @wraps(view) 
+    def wrapped_view(*args, **kwargs): 
+        if g.user != "admin1": 
+            return redirect(url_for("login", next=request.url)) 
         return view(*args, **kwargs) 
     return wrapped_view
 
@@ -92,7 +100,7 @@ def login():
         elif not check_password_hash(User["password"], form.password.data):
             form.password.errors("Wrong password, please try again")
         elif check_password_hash(User["password"], form.password.data) and User["email"] == form.email.data:
-            del session["email"]
+            session.clear()
             session["email"] = form.email.data
             flash(f"Welcome {form.email.data} You are logged in :)", "success")
             return redirect(request.args.get("next") or url_for("register"))
@@ -101,6 +109,7 @@ def login():
 
 
 @app.route('/addgame', methods=['GET','POST'])
+@admin_required
 def addGame():
     form = AddGameForm()
     if form.validate_on_submit():
@@ -126,12 +135,14 @@ def addGame():
 
 
 @app.route('/profile', methods=['GET','POST'])
+@login_required
 def profile():
     db = get_db()
     user = db.execute("""SELECT * FROM users WHERE email = ?;""", (session["email"],)).fetchone()
     return render_template("profile.html", title="Login Page", user=user)
 
 @app.route('/admin', methods=['GET','POST'])
+@admin_required
 def admin():
     db = get_db()
     games = db.execute("""SELECT * FROM games;""").fetchall()
@@ -139,6 +150,7 @@ def admin():
     return render_template("adminDashboard.html", title="Admin Page", games=games  )
 
 @app.route('/updategame/<int:game_id>', methods=['GET','POST'])
+@admin_required
 def updategame(game_id):
     db = get_db()
     game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
@@ -154,6 +166,7 @@ def updategame(game_id):
     return render_template("updateGame.html", title="Update Game", game=game )
 
 @app.route('/deletegame/<int:game_id>', methods=['GET', 'POST'])
+@admin_required
 def deletegame(game_id):
     db = get_db()
     game = db.execute("""SELECT * FROM games WHERE game_id = ?;""", (game_id,)).fetchone()
@@ -177,6 +190,7 @@ def addtocart(game_id):
         return redirect(url_for("home"))
 
 @app.route('/cart', methods=['GET', 'POST'])
+@login_required
 def cart():
         if "cart" not in session:
             session["cart"] = {}
