@@ -39,6 +39,7 @@ def admin_required(view):
 
 @app.before_request
 def delete_files():
+    db = get_db()
     gamesImages = db.execute("""SELECT image FROM games;""").fetchall()
     if len(gamesImages) > 10:
         num_files_to_delete = len(gamesImages) - 10
