@@ -11,7 +11,7 @@ Welcome to SourceSwap, a platform that provides a centralized repository for sha
 * Secure and reliable data storage using MySQL database.
 
 ## Usage
-Once you access Game Code Hub, you can perform the following actions:
+Once you access SourceSwap, you can perform the following actions:
 
 * Browse through the list of available game codes.
 * Use the search bar to find codes for specific games or platforms.
